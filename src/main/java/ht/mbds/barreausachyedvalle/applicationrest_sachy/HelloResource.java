@@ -20,6 +20,9 @@ public class HelloResource {
     @Path("personnes/{nom}")
     @Produces("text/plain")
     public Response helloPersonne(@PathParam("nom") String nom) {
-        return Response.ok("Hello, " + nom).build();
+       // return Response.ok("Hello, " + nom).build();
+        return Response.serverError()
+                .entity("Internal Server Error")
+                .build();
     }
 }
