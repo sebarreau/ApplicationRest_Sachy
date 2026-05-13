@@ -15,13 +15,14 @@ public class GuideTouristiqueService {
 
         GoogleAiGeminiChatModel model = GoogleAiGeminiChatModel.builder()
                 .apiKey(apiKey)
-                .modelName("gemini-2.5-flash")
+                .modelName("gemini-2.5-flash-lite")
                 .build();
 
         guideTouristique = AiServices.create(GuideTouristique.class, model);
     }
 
-    public String demanderGuide(String villeOuPays) {
-        return guideTouristique.endroitsDeVisite(villeOuPays);
+
+    public String demanderGuide(String villeOuPays, int nb) {
+        return guideTouristique.endroitsDeVisite(villeOuPays, nb);
     }
 }

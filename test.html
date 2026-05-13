@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Touristique</title>
+</head>
+<body>
+
+<h1>Guide Touristique</h1>
+
+<label for="countryInput">Entrez le nom d'un pays :</label>
+<input type="text" id="countryInput" placeholder="Entrez un pays">
+
+<button onclick="getTouristInfo()">Obtenir les informations</button>
+
+<div id="result"></div>
+
+<script>
+    function getTouristInfo() {
+        // Récupérer le nom du pays depuis l'input
+        var country = document.getElementById("countryInput").value;
+
+        // Vérifier si le champ est vide
+        if (country === "") {
+            alert("Veuillez entrer le nom d'un pays.");
+            return;
+        }
+
+        // Créer un objet XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // Configurer la requête
+        xhr.open("GET", `http://localhost:8080/ApplicationRest_Sachy-1.0-SNAPSHOT/api/guide/lieu/${country}?nb=5`, true);
+
+        // Définir la fonction de rappel à appeler lors de la fin de la requête
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Parse JSON et afficher les informations dans la div résultat
+                    var data = JSON.parse(xhr.responseText);
+                    document.getElementById("result").innerHTML = `
+                    <h2>Informations sur ${data.ville_ou_pays}</h2>
+                    <p>Endroits à visiter : ${data.endroits_a_visiter.join(", ")}</p>
+                    <p>Prix moyen d'un repas : ${data.prix_moyen_repas}</p>
+                `;
+                } else {
+                    // En cas d'échec de la requête
+                    document.getElementById("result").innerHTML = "<p>Erreur lors de la récupération des informations : " + xhr.status + ".</p>";
+                }
+            }
+        };
+
+        // Envoyer la requête
+        xhr.send();
+    }
+</script>
+
+</body>
+</html>
